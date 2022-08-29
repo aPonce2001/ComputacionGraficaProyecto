@@ -1,0 +1,54 @@
+# Blender MTL File: 'None'
+# Material Count: 4
+
+newmtl Grass
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump Grass_normal.png
+map_Kd Grass_baseColor.png
+
+newmtl Light
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump Light_normal.png
+map_Kd Light_baseColor.png
+map_Ke Light_emissive.png
+
+newmtl material
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump material_normal.png
+map_Kd material_baseColor.png
+map_Ke material_emissive.png
+map_d material_baseColor.png
+
+newmtl material_3
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump material_3_normal.png
+map_Kd material_3_baseColor.png
+map_d material_3_baseColor.png
