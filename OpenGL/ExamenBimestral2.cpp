@@ -27,7 +27,7 @@ const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
 
 //Ejecución de la cámara
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 2.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -38,7 +38,9 @@ float lastFrame = 0.0f;
 
 //lighting //Luz direccional (global)
 glm::vec3 lightPos(50.0f, 200.0f, 20.0f);
-glm::vec3 colorlightPredominant(0.03f, 0.03f, 0.03f);
+glm::vec3 colorlightPredominant(0.03f, 0.03f, 0.03f); //Ambiental simular luz de luna
+glm::vec3 ufoPosition(-20.0f, 5.0f, 0.0f);  //posicion del ufo
+glm::vec3 ufoLightColor(0.38f,1.0f,1.0f);   //Luz de la linterna grande
 
 int main()
 {
@@ -89,11 +91,13 @@ int main()
     //Model ourModel("model/backpack/backpack.obj");
     Model sceneModel("model/generalscene/BallroomBlitz.obj");
     Model stoneModel("model/stone/stone.obj");
-    Model ufoModel("model/ufo/ufo_abduction_pigs.obj");
+    Model ufoModel("model/ufo/ufo.obj");
+    Model pigsModel("model/ufo/pigs.obj");
     Model alienModel("model/alien/alien.obj");
     Model zombieModel("model/zombie/zombie.obj");
     Model monsterModel("model/monster/monster.obj");
     Model portalModel("model/portal/portal.obj");
+    Model torchModel("model/antorcha/antorcha.obj");
 
     float vertices[] = {
         // positions          // normals           // texture coords
@@ -141,7 +145,7 @@ int main()
     };
 
     glm::vec3 pointLightPositions[] = {
-        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::vec3(0.0f, 0.0f, 0.0f), 
         glm::vec3(-50.0f, 0.0f, 0.0f),
         glm::vec3(50.0f, 0.0f, 0.0f),
         glm::vec3(0.0f, 0.0f, 50.0f),
@@ -153,6 +157,17 @@ int main()
         glm::vec3(4.0f, 9.08, 15.0f),
         glm::vec3(5.0f, 7.06f, 16.0f),
         glm::vec3(5.0f, 7.04f, 14.0f),
+        //Posicion de luces del ufo
+        glm::vec3(ufoPosition.x-10,ufoPosition.y,ufoPosition.z),
+        //Posicion de las antorchas
+        glm::vec3(0.0f, 1.0f, 0.0f),
+        glm::vec3(4.0f, 1.0f, 12.0f),
+        glm::vec3(8.0f, 1.0f, 16.0f),
+        glm::vec3(12.0f, 1.0f,19.0f),
+        glm::vec3(2.0f, 1.0f, 12.0f),
+        glm::vec3(6.0f, 1.0f, 16.0f),
+        glm::vec3(10.0f, 1.0f,19.0f),
+        glm::vec3(5.0f, 1.0f, -5.0f),
     };
 
     // first, configure the cube's VAO (and VBO)
@@ -189,7 +204,6 @@ int main()
     unsigned int diffuseMapStone = loadTexture("model/stone/Scene_-_Root_baseColor.jpeg");
     //unsigned int specularMapStone = loadTexture("model/stone/Scene_-_Root_normal.png");
     unsigned int emissionMapStone = loadTexture("model/stone/Scene_-_Root_emissive.jpeg");
-    cout << emissionMapStone << endl;
 
     // shader configuration
     // --------------------
@@ -200,21 +214,34 @@ int main()
 
     glm::vec3 pointLightColors[] = {
         //
+        glm::vec3(0.38f, 1.0f, 1.0f),   //
+        glm::vec3(1.0f, 0.0f, 0.0f), //R
+        glm::vec3(0.0f, 1.0f, 0.0f), //G
+        glm::vec3(0.0f, 0.0f, 1.0f), //B
+        glm::vec3(0.4f, 0.3f, 1.0f), //X
+        //color luces para portal
         glm::vec3(0.38f, 1.0f, 1.0f),
-        glm::vec3(1.0f, 0.0f, 0.0f), //R G B
-        glm::vec3(0.0f, 1.0f, 0.0f),
-        glm::vec3(0.0f, 0.0f, 1.0f),
-        glm::vec3(0.4f, 0.3f, 1.0f),
-        glm::vec3(0.38f, 1.0f, 1.0f),
+        //color luces alrededor stone
         glm::vec3(0.945f, 0.0f, 0.0f),
         glm::vec3(1.0f, 0.788f, 0.054f),
         glm::vec3(1.0f, 0.098f, 0.1f),
         glm::vec3(0.9f, 0.2f, 0.1f),
+        //color luz del ufo
+        ufoLightColor,
+        //Color de las antorchas
+        glm::vec3(1.0f, 0.92f, 0.0f),
+        glm::vec3(1.0f, 0.92f, 0.0f),
+        glm::vec3(1.0f, 0.92f, 0.0f),
+        glm::vec3(1.0f, 0.92f, 0.0f),
+        glm::vec3(1.0f, 0.92f, 0.0f),
+        glm::vec3(1.0f, 0.92f, 0.0f),
+        glm::vec3(1.0f, 0.92f, 0.0f),
+        glm::vec3(1.0f, 0.92f, 0.0f),
     };
 
-    camera.MovementSpeed = 15; //Optional. Modify the speed of the camera
+    camera.MovementSpeed = 5; //Optional. Modify the speed of the camera
 
-    //Render loop
+    //Render loops
     while (!glfwWindowShouldClose(window))
     {
         //Lógica de tiempo por frames
@@ -233,7 +260,7 @@ int main()
         lightingShader.use();
 
         //Directional Light
-        lightingShader.setVec3("light.position", lightPos);
+        //lightingShader.setVec3("light.position", lightPos);
         lightingShader.setVec3("viewPos", camera.Position);
         lightingShader.setFloat("material.shininess", 36.0f);
 
@@ -323,6 +350,91 @@ int main()
         lightingShader.setFloat("pointLights[9].constant", 1.0f);
         lightingShader.setFloat("pointLights[9].linear", 0.7);
         lightingShader.setFloat("pointLights[9].quadratic", 0.5);
+        // point light 11 Luces del ufo
+        lightingShader.setVec3("pointLights[10].position", pointLightPositions[10]);
+        lightingShader.setVec3("pointLights[10].ambient", pointLightColors[10].x, pointLightColors[10].y, pointLightColors[10].z);
+        lightingShader.setVec3("pointLights[10].diffuse", pointLightColors[10].x, pointLightColors[10].y, pointLightColors[10].z);
+        lightingShader.setVec3("pointLights[10].specular", pointLightColors[10].x, pointLightColors[10].y, pointLightColors[10].z);
+        lightingShader.setFloat("pointLights[10].constant", 1.0f);
+        lightingShader.setFloat("pointLights[10].linear", 0.3);
+        lightingShader.setFloat("pointLights[10].quadratic", 0.1);
+        //Luces de las antorchas
+        // point light 12
+        lightingShader.setVec3("pointLights[11].position", pointLightPositions[11]);
+        lightingShader.setVec3("pointLights[11].ambient", pointLightColors[11].x * 0.08, pointLightColors[11].y * 0.08, pointLightColors[11].z * 0.08);
+        lightingShader.setVec3("pointLights[11].diffuse", pointLightColors[11].x, pointLightColors[11].y, pointLightColors[11].z);
+        lightingShader.setVec3("pointLights[11].specular", pointLightColors[11].x, pointLightColors[11].y, pointLightColors[11].z);
+        lightingShader.setFloat("pointLights[11].constant", 1.0f);
+        lightingShader.setFloat("pointLights[11].linear", 0.9);
+        lightingShader.setFloat("pointLights[11].quadratic", 0.6);
+        // point light 13
+        lightingShader.setVec3("pointLights[12].position", pointLightPositions[12]);
+        lightingShader.setVec3("pointLights[12].ambient", pointLightColors[12].x * 0.08, pointLightColors[12].y * 0.08, pointLightColors[12].z * 0.08);
+        lightingShader.setVec3("pointLights[12].diffuse", pointLightColors[12].x, pointLightColors[12].y, pointLightColors[12].z);
+        lightingShader.setVec3("pointLights[12].specular", pointLightColors[12].x, pointLightColors[12].y, pointLightColors[12].z);
+        lightingShader.setFloat("pointLights[12].constant", 1.0f);
+        lightingShader.setFloat("pointLights[12].linear", 0.9);
+        lightingShader.setFloat("pointLights[12].quadratic", 0.6);
+        // point light 14
+        lightingShader.setVec3("pointLights[13].position", pointLightPositions[13]);
+        lightingShader.setVec3("pointLights[13].ambient", pointLightColors[13].x, pointLightColors[13].y, pointLightColors[13].z);
+        lightingShader.setVec3("pointLights[13].diffuse", pointLightColors[13].x, pointLightColors[13].y, pointLightColors[13].z);
+        lightingShader.setVec3("pointLights[13].specular", pointLightColors[13].x, pointLightColors[13].y, pointLightColors[13].z);
+        lightingShader.setFloat("pointLights[13].constant", 1.0f);
+        lightingShader.setFloat("pointLights[13].linear", 0.9);
+        lightingShader.setFloat("pointLights[13].quadratic", 0.6);
+        // point light 15
+        lightingShader.setVec3("pointLights[14].position", pointLightPositions[14]);
+        lightingShader.setVec3("pointLights[14].ambient", pointLightColors[14].x, pointLightColors[14].y, pointLightColors[14].z);
+        lightingShader.setVec3("pointLights[14].diffuse", pointLightColors[14].x, pointLightColors[14].y, pointLightColors[14].z);
+        lightingShader.setVec3("pointLights[14].specular", pointLightColors[14].x, pointLightColors[14].y, pointLightColors[14].z);
+        lightingShader.setFloat("pointLights[14].constant", 1.0f);
+        lightingShader.setFloat("pointLights[14].linear", 0.9);
+        lightingShader.setFloat("pointLights[14].quadratic", 0.6);
+        //point light 16
+        lightingShader.setVec3("pointLights[15].position", pointLightPositions[5]);
+        lightingShader.setVec3("pointLights[15].ambient", pointLightColors[15].x * 0.1, pointLightColors[15].y * 0.1, pointLightColors[15].z * 0.1);
+        lightingShader.setVec3("pointLights[15].diffuse", pointLightColors[15].x, pointLightColors[15].y, pointLightColors[15].z);
+        lightingShader.setVec3("pointLights[15].specular", pointLightColors[15].x, pointLightColors[15].y, pointLightColors[15].z);
+        lightingShader.setFloat("pointLights[15].constant", 1.0f);
+        lightingShader.setFloat("pointLights[15].linear", 0.9);
+        lightingShader.setFloat("pointLights[15].quadratic", 0.6);
+        //point light 17
+        lightingShader.setVec3("pointLights[16].position", pointLightPositions[16]);
+        lightingShader.setVec3("pointLights[16].ambient", pointLightColors[16].x * 0.1, pointLightColors[16].y * 0.1, pointLightColors[16].z * 0.1);
+        lightingShader.setVec3("pointLights[16].diffuse", pointLightColors[16].x, pointLightColors[16].y, pointLightColors[16].z);
+        lightingShader.setVec3("pointLights[16].specular", pointLightColors[16].x, pointLightColors[16].y, pointLightColors[16].z);
+        lightingShader.setFloat("pointLights[16].constant", 1.0f);
+        lightingShader.setFloat("pointLights[16].linear", 0.9);
+        lightingShader.setFloat("pointLights[16].quadratic", 0.6);
+        //point light 18
+        lightingShader.setVec3("pointLights[17].position", pointLightPositions[17]);
+        lightingShader.setVec3("pointLights[17].ambient", pointLightColors[17].x * 0.1, pointLightColors[17].y * 0.1, pointLightColors[17].z * 0.1);
+        lightingShader.setVec3("pointLights[17].diffuse", pointLightColors[17].x, pointLightColors[17].y, pointLightColors[17].z);
+        lightingShader.setVec3("pointLights[17].specular", pointLightColors[17].x, pointLightColors[17].y, pointLightColors[17].z);
+        lightingShader.setFloat("pointLights[17].constant", 1.0f);
+        lightingShader.setFloat("pointLights[17].linear", 0.9);
+        lightingShader.setFloat("pointLights[17].quadratic", 0.6);
+        //point light 19
+        lightingShader.setVec3("pointLights[18].position", pointLightPositions[18]);
+        lightingShader.setVec3("pointLights[18].ambient", pointLightColors[18].x * 0.1, pointLightColors[18].y * 0.1, pointLightColors[18].z * 0.1);
+        lightingShader.setVec3("pointLights[18].diffuse", pointLightColors[18].x, pointLightColors[18].y, pointLightColors[18].z);
+        lightingShader.setVec3("pointLights[18].specular", pointLightColors[18].x, pointLightColors[18].y, pointLightColors[18].z);
+        lightingShader.setFloat("pointLights[18].constant", 1.0f);
+        lightingShader.setFloat("pointLights[18].linear", 0.9);
+        lightingShader.setFloat("pointLights[18].quadratic", 0.6);
+
+        // spotLight
+        lightingShader.setVec3("spotLight.position", ufoPosition.x-10.0f, ufoPosition.y, ufoPosition.z);
+        lightingShader.setVec3("spotLight.direction", ufoPosition.x-10.0f, ufoPosition.y-ufoPosition.y, ufoPosition.z);
+        lightingShader.setVec3("spotLight.ambient", 0.0f,0.0f,0.0f);
+        lightingShader.setVec3("spotLight.diffuse", ufoLightColor);
+        lightingShader.setVec3("spotLight.specular", ufoLightColor);
+        lightingShader.setFloat("spotLight.constant", 1.0f);
+        lightingShader.setFloat("spotLight.linear", 0.05);
+        lightingShader.setFloat("spotLight.quadratic", 0.01);
+        lightingShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(10.0f)));
+        lightingShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(12.0f)));
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
@@ -337,7 +449,6 @@ int main()
         //glActiveTexture(GL_TEXTURE1);
         //glBindTexture(GL_TEXTURE_2D, specularMapStone);
 
-
         float angulo = currentFrame * 14;
         glm::mat4 model = glm::mat4(1.0f);
 
@@ -347,13 +458,20 @@ int main()
         lightingShader.setMat4("model", model);
         sceneModel.Draw(lightingShader);
 
-        model = glm::translate(model, glm::vec3(-20.0f, 10.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+        model = glm::translate(model, glm::vec3(ufoPosition.x, ufoPosition.y, ufoPosition.z)); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(0.05, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
         //model = glm::translate(model, glm::vec3(currentFrame*10, 10.0f, currentFrame*10)); // translate it down so it's at the center of the scene
         model = glm::rotate(model, glm::radians(angulo), glm::vec3(0.0f, 1.0f, 0.0f));
         lightingShader.setMat4("model", model);
         ufoModel.Draw(lightingShader);
 
+        model = glm::translate(model, glm::vec3(ufoPosition.x, ufoPosition.y + sin(currentFrame) * 1.7 - 1.5, ufoPosition.z)); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));	// it's a bit too big for our scene, so scale it down
+        //model = glm::translate(model, glm::vec3(currentFrame*10, 10.0f, currentFrame*10)); // translate it down so it's at the center of the scene
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(0.0f, 1.0f, 0.0f));
+        lightingShader.setMat4("model", model);
+        pigsModel.Draw(lightingShader);
+        
         //glActiveTexture(GL_TEXTURE2);
         //glBindTexture(GL_TEXTURE_2D, emissionMapStone);
         model = glm::mat4(1.0f);
@@ -388,39 +506,15 @@ int main()
         model = glm::scale(model, glm::vec3(0.003f, 0.003f, 0.003f));	// it's a bit too big for our scene, so scale it down
         lightingShader.setMat4("model", model);
         portalModel.Draw(lightingShader);
-        /*
-        //glDisable(GL_TEXTURE0);
-        //glDisable(GL_TEXTURE2);
-        */
 
-        /*
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 0.0f,1.0f));
-        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
-        landModel.Draw(ourShader);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
-        medievalHouseModel.Draw(ourShader);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseTerem);
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, emissionTerem);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
-        teremModel.Draw(ourShader);
-        //glDisable(GL_TEXTURE0);
-        //glDisable(GL_TEXTURE1);
-        //glDisable(GL_TEXTURE2);
-        */
+        for (unsigned int i = 11; i < 19; i++)
+        {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model,pointLightPositions[i]); // translate it down so it's at the center of the scene
+            model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
+            lightingShader.setMat4("model", model);
+            torchModel.Draw(lightingShader);
+        }
 
         // also draw the lamp object
         lightPredominat.use();
@@ -437,7 +531,7 @@ int main()
 
         lightPredominat.use();
         glBindVertexArray(lightCubeVAO);
-        for (unsigned int i = 0; i < 10; i++)
+        for (unsigned int i = 0; i < 11; i++)
         {
             lightPredominat.setVec3("lightColorCube", pointLightColors[i]);
             model = glm::mat4(1.0f);
@@ -446,7 +540,17 @@ int main()
             lightPredominat.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-
+        
+        for (unsigned int i = 11; i < 19; i++)
+        {
+            lightPredominat.setVec3("lightColorCube", pointLightColors[i]);
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, pointLightPositions[i]);
+            model = glm::scale(model, glm::vec3(0.02f)); // Make it a smaller cube
+            lightPredominat.setMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+        
         //Cambio de buffers frente a inputs u outputs
         glfwSwapBuffers(window);
         glfwPollEvents();
