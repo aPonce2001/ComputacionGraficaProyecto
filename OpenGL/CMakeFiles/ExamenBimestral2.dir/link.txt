@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/ExamenBimestral2.dir/glad.c.o CMakeFiles/ExamenBimestral2.dir/ExamenBimestral2.cpp.o -o ExamenBimestral2  -lGL -ldl -lglfw -lassimp 
