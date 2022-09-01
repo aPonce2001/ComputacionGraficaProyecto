@@ -1,0 +1,3 @@
+/home/churukun/DATA (D)/Universidad/Computación gráfica/CP/Semana 14/ComputacionGraficaProyecto/OpenGL/CMakeFiles/ExamenBimestral2.dir
+/home/churukun/DATA (D)/Universidad/Computación gráfica/CP/Semana 14/ComputacionGraficaProyecto/OpenGL/CMakeFiles/edit_cache.dir
+/home/churukun/DATA (D)/Universidad/Computación gráfica/CP/Semana 14/ComputacionGraficaProyecto/OpenGL/CMakeFiles/rebuild_cache.dir
