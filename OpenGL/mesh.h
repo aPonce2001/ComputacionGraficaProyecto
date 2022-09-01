@@ -77,7 +77,7 @@ public:
              else if(name == "textures_emission")
              	number = std::to_string(emissionNr++);
              else if(name == "texture_normals")
-                number = std::to_string(normalsNr++);	
+                number = std::to_string(normalsNr++);
 
             // now set the sampler to the correct texture unit
             glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
