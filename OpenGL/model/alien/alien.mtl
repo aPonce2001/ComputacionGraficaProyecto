@@ -11,6 +11,7 @@ Ni 1.450000
 d 1.000000
 illum 3
 map_Bump Alien_normal.png
+map_Ke material_emissive.png
 
 newmtl Casco
 Ns 1000.000000
@@ -21,6 +22,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 3
+map_Ke material_emissive.png
 
 newmtl Dientes
 Ns 32.000008
@@ -31,6 +33,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Ke material_emissive.png
 
 newmtl Encias
 Ns 0.000000
@@ -41,6 +44,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Ke material_emissive.png
 
 newmtl Tubo
 Ns 1000.000000
@@ -52,6 +56,7 @@ Ni 1.450000
 d 1.000000
 illum 3
 map_Bump Tubo_normal.png
+map_Ke material_emissive.png
 
 newmtl Tubo_Cables
 Ns 161.802562
@@ -64,3 +69,4 @@ d 1.000000
 illum 3
 map_Bump Tubo_normal.png
 map_Kd Tubo_Cables_baseColor.png
+map_Ke material_emissive.png

@@ -2,40 +2,40 @@
 # Material Count: 3
 
 newmtl Base_Body.000
-Ns 359.999993
+Ns 250.000000
 Ka 0.500000 0.500000 0.500000
 Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
+Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.000000
+Ni 1.450000
 d 1.000000
-illum 3
-map_Kd Lord-of-the-Lake-1A-Col.png
-map_Bump Lord-of-the-Lake-1-Nor.png
+illum 1
+map_Kd The-Immaculate-One-Final-Form-1A-Col.png
+map_Bump The-Immaculate-One-Final-Form-1-Nor.png
 map_Ke material_emissive.png
 
 newmtl Base_Body.001
-Ns 359.999993
+Ns 250.000000
 Ka 0.500000 0.500000 0.500000
 Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
+Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.000000
+Ni 1.450000
 d 1.000000
-illum 3
-map_Kd Lord-of-the-Lake-2A-Col.png
-map_Bump Lord-of-the-Lake-2-Nor.png
+illum 1
+map_Kd The-Immaculate-One-Final-Form-2A-Col.png
+map_Bump The-Immaculate-One-Final-Form-2-Nor.png
 map_Ke material_emissive.png
 
 newmtl Base_Body.002
-Ns 359.999993
+Ns 250.000000
 Ka 0.500000 0.500000 0.500000
 Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
+Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.000000
+Ni 1.450000
 d 1.000000
-illum 3
-map_Kd Lord-of-the-Lake-3A-Col.png
-map_Bump Lord-of-the-Lake-3-Nor.png
+illum 1
+map_Kd The-Immaculate-One-Final-Form-Wings-1A-Col.png
+map_Bump The-Immaculate-One-Final-Form-Wings-1-Nor.png
 map_Ke material_emissive.png
